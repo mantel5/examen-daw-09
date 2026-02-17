@@ -1,4 +1,6 @@
-## Examen Arquitecturas Cloud y DevOps
+# Examen Arquitecturas Cloud y DevOps
 
 
-[![Texto alternativo](temperatura.png)]
+
+![alt text](temperatura.png)
+
