@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'frontend/**'
+      - 'frontend/**' # Solo se activa si cambias algo en la carpeta frontend
 jobs:
   build:
     runs-on: ubuntu-latest
