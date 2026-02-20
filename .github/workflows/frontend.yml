@@ -1,22 +1,41 @@
-name: CI/CD Frontend
+name: CI/CD Frontend Pro
 on:
   push:
     branches: [ "main" ]
     paths:
-      - 'frontend/**' # Solo se activa si cambias algo en la carpeta frontend
+      - 'frontend/**'
+
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+
+    # --- PASO 1: SUBIR LA IMAGEN ---
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+
     - name: Build and push Frontend
       uses: docker/build-push-action@v4
       with:
         context: ./frontend
         push: true
         tags: marcoslahuertasalas/temperaturas-frontend:v-examen
+
+    # --- PASO 2: ACTUALIZAR EL CLÚSTER (EL NIVEL PRO) ---
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: us-east-1
+
+    - name: Update Kubeconfig
+      run: aws eks update-kubeconfig --name demo-cluster --region us-east-1
+
+    - name: Force Deployment Update
+      run: kubectl rollout restart deployment temperaturas-frontend
