@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'backend/**' # Solo se activa si cambias algo en la carpeta backend
+      - 'backend/**'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +17,6 @@ jobs:
     - name: Build and push Backend
       uses: docker/build-push-action@v4
       with:
-        context: ./frontend # Aunque el código es del backend, el contexto de construcción suele ser la raíz o la carpeta
         context: ./backend
         push: true
         tags: marcoslahuertasalas/temperaturas-backend:v-examen
