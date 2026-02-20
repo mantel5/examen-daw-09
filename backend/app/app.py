@@ -53,5 +53,5 @@ api.add_resource(FiltrarMunicipios, '/municipios/<string:cadena>')
 api.add_resource(DevolverTemperatura, '/temperatura/<string:codigo>')
 api.add_resource(Status, '/status')
 
-if __name__ == '__main__':
+if __name__ == '__main__': 
     app.run("0.0.0.0",debug=True)
