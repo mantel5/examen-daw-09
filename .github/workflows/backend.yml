@@ -1,0 +1,23 @@
+name: CI/CD Backend
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'backend/**' # Solo se activa si cambias algo en la carpeta backend
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push Backend
+      uses: docker/build-push-action@v4
+      with:
+        context: ./frontend # Aunque el código es del backend, el contexto de construcción suele ser la raíz o la carpeta
+        context: ./backend
+        push: true
+        tags: marcoslahuertasalas/temperaturas-backend:v-examen
